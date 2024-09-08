@@ -9,7 +9,6 @@ from termcolor import colored
 from PyInquirer import prompt, Separator
 from shutil import which
 
-
 def is_tool(name):
     """Check whether `name` is on PATH and marked as executable."""
     return which(name) is not None
@@ -44,6 +43,8 @@ for item in vault_items:
     if 'login' in item:
         items[item['name']] = item['login']
 
+#del items[None]
+
 items_keys = list(items.keys())
 
 r = re.compile(".*" + to_find + ".*", re.IGNORECASE)
@@ -71,7 +72,10 @@ item_credentials = items[item_name]
 pyperclip.copy(str(item_credentials['password']))
 
 if 'uris' in item_credentials:
-    uri = item_credentials['uris'][0]['uri']
+    if len(item_credentials['uris']) > 0:
+        uri = item_credentials['uris'][0]['uri']
+    else:
+        uri = 'None'
 else:
     uri = 'None'
 
